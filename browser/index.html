@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>ハンド自動生成ツール</title>
+    <link rel="stylesheet" type="text/css" href="bridge.css">
 </head>
 
 <body>
@@ -936,7 +937,7 @@
         <input type="button" value="生成" onclick="main()">
         <input type="reset" value="リセット">
     </form>
-    <div align="center" class="result" id="Nresult">N
+    <div class="result" id="Nresult">N
         <div class="text" name="NSuit"></div>
         <div class="text" name="NSuit"></div>
         <div class="text" name="NSuit"></div>
@@ -944,17 +945,22 @@
     </div>
     <div align="left" class="result" id="Eresult">E
         <div class="text" name="ESuit"></div>
-        <div class="text" name="ESuit"></div>
-        <div class="text" name="ESuit"></div>
-        <div class="text" name="ESuit"></div>
+    <div class="result" id="Eresult">
+            <span class="text" name="WSuit"></span>
+        </div>
+        <div>
+            <span class="text" name="ESuit"></span>
+            <span class="text" name="WSuit"></span>
+        </div>
+        <div>
+            <span class="text" name="ESuit"></span>
+            <span class="text" name="WSuit"></span>
+        </div>
     </div>
     <div align="right" class="result" id="Wresult">W
         <div class="text" name="WSuit"></div>
         <div class="text" name="WSuit"></div>
-        <div class="text" name="WSuit"></div>
-        <div class="text" name="WSuit"></div>
-    </div>
-    <div align="center" class="result" id="Sresult">S
+    <div class="result" id="Sresult">S
         <div class="text" name="SSuit"></div>
         <div class="text" name="SSuit"></div>
         <div class="text" name="SSuit"></div>
@@ -963,4 +969,5 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
     <script src="bridge.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,12 @@
+div#Nresult{
+    position: relative; left: 100px;
+}
+div#Sresult{
+    position: relative; left: 100px;
+}
+span[name="WSuit"]{
+    position: absolute; left: 200px;
+}
+[name="Wtitle"]{
+    position: absolute; left: 200px;
+}

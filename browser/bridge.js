@@ -609,6 +609,6 @@ function main() {
 		handreset();
 	}
 	else {
-		printf("タイムアウトしました");
+		$('#result').html("やめて，いぢめないで．条件が厳しすぎます．")
 	}
 }

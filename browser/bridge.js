@@ -81,7 +81,7 @@ function Wsort() {
 	}
 }
 
-function printchange(x) {
+function NumToAKQ(x) {
 	if (x % 13 == 0) return "A";
 	if (x % 13 == 1) return "K";
 	if (x % 13 == 2) return "Q";
@@ -97,82 +97,54 @@ function printchange(x) {
 	if (x % 13 == 12) return "2";
 }
 
-function Nprintout() {
-	for (let i = 0; i < 13; ++i)
-		$('[name="NSuit"]').eq(Math.floor(N[i] / 13)).append(printchange(N[i]));
-}
-function Sprintout() {
-	for (let i = 0; i < 13; ++i)
-		$('[name="SSuit"]').eq(Math.floor(S[i] / 13)).append(printchange(S[i]));
-}
-function Eprintout() {
-	for (let i = 0; i < 13; ++i)
-		$('[name="ESuit"]').eq(Math.floor(E[i] / 13)).append(printchange(E[i]));
-}
-function Wprintout() {
-	for (let i = 0; i < 13; ++i)
-		$('[name="WSuit"]').eq(Math.floor(W[i] / 13)).append(printchange(W[i]));
+function AKQtoNum(x) {
+	if (x == 'A') return 0;
+	if (X == 'K') return 1;
+	if (x = 'Q') return 2;
+	if (x == 'J') return 3;
+	if (X = 'T') return 4;
+	return 14 - Number(x);
 }
 
-function WEprintout() {
-	printf("W\t\t\t\tE\n");
-	let i, j;
-	for (i = 0; i < 13; i++) {
-		if (W[i] < 13)
-			printchange(W[i]);
-		else
-			break;
+function Nprintout() {
+	let toPrint = new Array("", "", "", "");
+	for (let i = 0; i < 13; ++i) {
+		toPrint[Math.floor(N[i] / 13)] += NumToAKQ(N[i]);
 	}
-	printf("\t\t\t\t");
-	for (j = 0; j < 13; j++) {
-		if (E[j] < 13)
-			printchange(E[j]);
-		else
-			break;
+	for (let i = 0; i < 4; ++i) {
+		if (toPrint[i].length == 0) toPrint[i] = '-';
+		$('[name="NSuit"]').eq(i).append(toPrint[i]);
 	}
-	printf("\n");
-	for (i; i < 13; i++) {
-		if (W[i] < 26)
-			printchange(W[i]);
-		else
-			break;
+}
+function Sprintout() {
+	let toPrint = new Array("", "", "", "");
+	for (let i = 0; i < 13; ++i) {
+		toPrint[Math.floor(S[i] / 13)] += NumToAKQ(S[i]);
 	}
-	printf("\t\t\t\t");
-	for (j; j < 13; j++) {
-		if (E[j] < 26)
-			printchange(E[j]);
-		else
-			break;
+	for (let i = 0; i < 4; ++i) {
+		if (toPrint[i].length == 0) toPrint[i] = '-';
+		$('[name="SSuit"]').eq(i).append(toPrint[i]);
 	}
-	printf("\n");
-	for (i; i < 13; i++) {
-		if (W[i] < 39)
-			printchange(W[i]);
-		else
-			break;
+}
+function Eprintout() {
+	let toPrint = new Array("", "", "", "");
+	for (let i = 0; i < 13; ++i) {
+		toPrint[Math.floor(E[i] / 13)] += NumToAKQ(E[i]);
 	}
-	printf("\t\t\t\t");
-	for (j; j < 13; j++) {
-		if (E[j] < 39)
-			printchange(E[j]);
-		else
-			break;
+	for (let i = 0; i < 4; ++i) {
+		if (toPrint[i].length == 0) toPrint[i] = '-';
+		$('[name="ESuit"]').eq(i).append(toPrint[i]);
 	}
-	printf("\n");
-	for (i; i < 13; i++) {
-		if (W[i] < 52)
-			printchange(W[i]);
-		else
-			break;
+}
+function Wprintout() {
+	let toPrint = new Array("", "", "", "");
+	for (let i = 0; i < 13; ++i) {
+		toPrint[Math.floor(W[i] / 13)] += NumToAKQ(W[i]);
 	}
-	printf("\t\t\t\t");
-	for (j; j < 13; j++) {
-		if (E[j] < 52)
-			printchange(E[j]);
-		else
-			break;
+	for (let i = 0; i < 4; ++i) {
+		if (toPrint[i].length == 0) toPrint[i] = '-';
+		$('[name="WSuit"]').eq(i).append(toPrint[i]);
 	}
-	printf("\n");
 }
 
 function Ninsert(x) {
@@ -436,29 +408,38 @@ function printout() {
 	Eprintout();
 	Wprintout();
 }
+
+function calc_card_num(suit, num) {
+	let ret = 0;
+	ret += suit * 13;
+	if (num = 'A') ret += 0;
+
+}
 /*
 function Insert() {
-	let a;
-	let flag = 0;
-	while (flag == 0) {
-		printf("Where?\n1:N\n2:S\n3:E\n4:W\n");
-		scanf("%d", & a);
-		printf("What card?\n");
-		let b;
-		scanf("%d", & b);
-		if (a == 1)
-			Ninsert(b);
-		else if (a == 2)
-			Sinsert(b);
-
-		else if (a == 3)
-			Einsert(b);
-		else if (a == 4)
-			Winsert(b);
-		printf("again?\n0:Yes1:No\n");
-		scanf("%d", & a);
-		if (a == 1)
-			break;
+	for (let i = 0; i < 4; i++) {
+		let string = hand_input.Ncard[i].value;
+		for (let j = 0; j < string.length; ++i) {
+			Ninsert(AKQtoNum(string[j]));
+		}
+	}
+	for (let i = 0; i < 4; i++) {
+		let string = hand_input.Scard[i].value;
+		for (let j = 0; j < string.length; ++i) {
+			Sinsert(AKQtoNum(string[j]));
+		}
+	}
+	for (let i = 0; i < 4; i++) {
+		let string = hand_input.Ecard[i].value;
+		for (let j = 0; j < string.length; ++i) {
+			Einsert(AKQtoNum(string[j]));
+		}
+	}
+	for (let i = 0; i < 4; i++) {
+		let string = hand_input.Wcard[i].value;
+		for (let j = 0; j < string.length; ++i) {
+			Winsert(AKQtoNum(string[j]));
+		}
 	}
 }
 */

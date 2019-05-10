@@ -99,10 +99,10 @@ function NumToAKQ(x) {
 
 function AKQtoNum(x) {
 	if (x == 'A') return 0;
-	if (X == 'K') return 1;
-	if (x = 'Q') return 2;
+	if (x == 'K') return 1;
+	if (x == 'Q') return 2;
 	if (x == 'J') return 3;
-	if (X = 'T') return 4;
+	if (x == 'T') return 4;
 	return 14 - Number(x);
 }
 
@@ -150,49 +150,50 @@ function Wprintout() {
 function Ninsert(x) {
 	let flag = 0;
 	if (checkuse[x] == 1) {
-		printf("already used");
+		return false;
 	}
 	else {
 		N[Ncheckuse] = x;
 		NcheckInsert[Ncheckuse] = x;
 		Ncheckuse++;
 		checkuse[x] = 1;
+		return true;
 	}
 }
 function Sinsert(x) {
-	let flag = 0;
 	if (checkuse[x] == 1) {
-		printf("already used");
+		return false;
 	}
 	else {
 		S[Scheckuse] = x;
 		ScheckInsert[Scheckuse] = x;
 		Scheckuse++;
 		checkuse[x] = 1;
+		return true;
 	}
 }
 function Einsert(x) {
-	let flag = 0;
 	if (checkuse[x] == 1) {
-		printf("already used");
+		return false;
 	}
 	else {
 		E[Echeckuse] = x;
 		EcheckInsert[Echeckuse] = x;
 		Echeckuse++;
 		checkuse[x] = 1;
+		return true;
 	}
 }
 function Winsert(x) {
-	let flag = 0;
 	if (checkuse[x] == 1) {
-		printf("already used");
+		return false;
 	}
 	else {
 		W[Wcheckuse] = x;
 		WcheckInsert[Wcheckuse] = x;
 		Wcheckuse++;
 		checkuse[x] = 1;
+		return true;
 	}
 }
 
@@ -415,41 +416,43 @@ function calc_card_num(suit, num) {
 	if (num = 'A') ret += 0;
 
 }
-/*
+
 function Insert() {
+	let flag=true;
 	for (let i = 0; i < 4; i++) {
-		let string = hand_input.Ncard[i].value;
-		for (let j = 0; j < string.length; ++i) {
-			Ninsert(AKQtoNum(string[j]));
+		let string = hand_input.NCard[i].value;
+		for (let j = 0; j < string.length; ++j) {
+			flag&=Ninsert(13 * i + AKQtoNum(string[j]));
 		}
 	}
 	for (let i = 0; i < 4; i++) {
-		let string = hand_input.Scard[i].value;
-		for (let j = 0; j < string.length; ++i) {
-			Sinsert(AKQtoNum(string[j]));
+		let string = hand_input.SCard[i].value;
+		for (let j = 0; j < string.length; ++j) {
+			flag&=Sinsert(13 * i + AKQtoNum(string[j]));
 		}
 	}
 	for (let i = 0; i < 4; i++) {
-		let string = hand_input.Ecard[i].value;
-		for (let j = 0; j < string.length; ++i) {
-			Einsert(AKQtoNum(string[j]));
+		let string = hand_input.ECard[i].value;
+		for (let j = 0; j < string.length; ++j) {
+			flag&=Einsert(13 * i + AKQtoNum(string[j]));
 		}
 	}
 	for (let i = 0; i < 4; i++) {
-		let string = hand_input.Wcard[i].value;
-		for (let j = 0; j < string.length; ++i) {
-			Winsert(AKQtoNum(string[j]));
+		let string = hand_input.WCard[i].value;
+		for (let j = 0; j < string.length; ++j) {
+			flag&=Winsert(13 * i + AKQtoNum(string[j]));
 		}
 	}
+	return flag;
 }
-*/
-function handclear() { first_reset(); }
+
 function handreset() {
 	Nhandreset();
 	Shandreset();
 	Ehandreset();
 	Whandreset();
 }
+
 function condition() {
 	Nshape();
 	Sshape();
@@ -571,9 +574,15 @@ function checkcondition() {
 }
 
 function main() {
+	console.log(AKQtoNum("A"));
 	let flag = false;
 	first_reset();
 	condition();
+	if(!Insert()){
+		$('#error').text("挿入したカードに重複があります．");
+		return;
+	}
+	else $('#error').text("");
 	var start = new Date();
 	start = start.getTime();
 	while (true) {
@@ -590,6 +599,6 @@ function main() {
 		handreset();
 	}
 	else {
-		$('#result').html("やめて，いぢめないで．条件が厳しすぎます．")
+		$('#error').text("やめて，いぢめないで．条件が厳しすぎます．");
 	}
 }

@@ -4,9 +4,9 @@ div#Nresult{
 div#Sresult{
     position: relative; left: 100px;
 }
-span[name="WSuit"]{
+span[name="ESuit"]{
     position: absolute; left: 200px;
 }
-[name="Wtitle"]{
+[name="Etitle"]{
     position: absolute; left: 200px;
 }

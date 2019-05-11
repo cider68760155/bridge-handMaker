@@ -574,7 +574,6 @@ function checkcondition() {
 }
 
 function main() {
-	console.log(AKQtoNum("A"));
 	let flag = false;
 	first_reset();
 	condition();

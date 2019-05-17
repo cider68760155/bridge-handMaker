@@ -953,6 +953,8 @@
         <input type="button" value="生成" onclick="main()">
         <input type="reset" value="リセット">
     </form>
+    <p>試行ID：<span id="sikouID"></span></p>
+    <p>試行回数：<span id="times">0</span>回</p>
     <div id="result">
         <div class="result" id="Nresult">N
             <div class="text" name="NSuit"></div>
@@ -989,6 +991,7 @@
     </div>
     <div id="error"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+    <script>$('#sikouID').text(Math.floor(Math.random()*100000));</script>
     <script src="bridge.js"></script>
 </body>
 

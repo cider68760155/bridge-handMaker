@@ -573,8 +573,15 @@ function checkcondition() {
 	return 0;
 }
 
+function counter_up(){
+	let times=Number($('#times').text());
+	times++;
+	$('#times').text(times);
+}
+
 function main() {
 	let flag = false;
+	counter_up();
 	first_reset();
 	condition();
 	if(!Insert()){

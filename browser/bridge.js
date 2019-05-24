@@ -4,7 +4,11 @@ let checkInsert = new Array(4);
 let card = new Array(4);
 let shapevec = []
 let hcpvec = new Array(4);
+let toInsrty = new Array(4);
 
+let precheckInsert;
+let preshapevec;
+let prehcpvec;
 
 function chk_inbox(i, val) {
 	if (i == '-') return val;
@@ -229,17 +233,35 @@ function counter_up() {
 	$('#times').text(times);
 }
 
+function save_condition() {
+	precheckInsert = checkInsert;
+	preshapevec = shapevec;
+	prehcpvec = hcpvec;
+}
+
+function is_changed() {
+	if (JSON.stringify(precheckInsert) !== JSON.stringify(checkInsert)) return true;
+	if (JSON.stringify(preshapevec) !== JSON.stringify(shapevec)) return true;
+	if (JSON.stringify(prehcpvec) !== JSON.stringify(hcpvec)) return true;
+	return false;
+}
+
 function main() {
 	let flag = false;
 	counter_up();
 	first_reset();
 	shape();
 	hcp();
+	if (is_changed()) {
+		$('#sikouID').text(Math.floor(Math.random() * 100000));
+		$('#times').text(1);
+	} 
 	if (!Insert()) {
 		$('#error').text("挿入したカードに重複があります．");
 		return;
 	}
 	else $('#error').text("");
+	save_condition();
 	var start = new Date();
 	start = start.getTime();
 	while (true) {

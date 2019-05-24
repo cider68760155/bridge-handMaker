@@ -61,7 +61,7 @@ void printchange(int x) {//”š‚ğ•¶š‚É•ÏŠ·‚µ‚Äo—Í‚·‚éŠÖ”B
 	if (x % 13 == 10)printf("4");
 	if (x % 13 == 11)printf("3");
 	if (x % 13 == 12)printf("2");
-	
+
 }
 
 void printout() {		//‚¢‚¢Š´‚¶‚ÉNSEW‚Ìƒnƒ“ƒh‚ğo—Í‚·‚éŠÖ”B‘Oq‚Ìprintchange‚ğg—pBcard[i][]‚Íƒ\[ƒg‚³‚ê‚Ä‚¢‚é‘O’ñB
@@ -226,7 +226,7 @@ void insert(int a, int b) {//Ÿ‚ÌInsert‚Ég‚¤ŠÖ”BÀÛ‚ÉInsert‚·‚é‚Ì‚Í‚±‚±Bˆø
 	}
 }
 
-void Insert(){//Insertƒ‚[ƒh‚É“ü‚Á‚½‚ÌƒAƒiƒEƒ“ƒX‚âA•ûŠpA‹ï‘Ì“I‚ÈƒJ[ƒh‚Ì“ü—Í‚ğó‚¯•t‚¯‚éB
+void Insert() {//Insertƒ‚[ƒh‚É“ü‚Á‚½‚ÌƒAƒiƒEƒ“ƒX‚âA•ûŠpA‹ï‘Ì“I‚ÈƒJ[ƒh‚Ì“ü—Í‚ğó‚¯•t‚¯‚éB
 	int a;
 	int flag = 0;
 	while (flag == 0) {
@@ -284,8 +284,8 @@ void condition() {//conditionƒ‚[ƒh‚Åg—p‚·‚éŠÖ”B
 }
 
 int checkcondition() {//ğŒ‚ğŠm”F‚·‚éŠÖ”B–‚½‚µ‚Ä‚¢‚ê‚Î0‚ğA–‚½‚µ‚Ä‚¢‚È‚¯‚ê‚Î1‚ğ•Ô‚·B
-	int cnt = 0;
 	for (int j = 0; j < 4; j++) {
+		int cnt = 0;
 		for (int i = 0; i < 13; i++)
 			if (card[j][i] / 13 == 0) cnt++;
 		if (cnt<shapevec[j][0][0] || cnt>shapevec[j][1][0])
@@ -305,15 +305,12 @@ int checkcondition() {//ğŒ‚ğŠm”F‚·‚éŠÖ”B–‚½‚µ‚Ä‚¢‚ê‚Î0‚ğA–‚½‚µ‚Ä‚¢‚È‚¯‚ê‚
 			if (card[j][i] / 13 == 3) cnt++;
 		if (cnt<shapevec[j][0][3] || cnt>shapevec[j][1][3])
 			return 1;
-		for (int j = 0; j < 4; j++) {
-			cnt = 0;
-			for (int i = 0; i < 13; i++)
-				if (card[j][i] % 13 <= 4)cnt = cnt + 4 - card[j][i] % 13;
-			if (cnt<hcpvec[j][0] || cnt>hcpvec[j][1])
-				return 1;
-		}
+		cnt = 0;
+		for (int i = 0; i < 13; i++)
+			if (card[j][i] % 13 <= 4)cnt = cnt + 4 - card[j][i] % 13;
+		if (cnt<hcpvec[j][0] || cnt>hcpvec[j][1])
+			return 1;
 	}
-
 	return 0;
 }
 

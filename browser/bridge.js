@@ -1,83 +1,24 @@
 let checkuse = new Array(52);
-let Ncheckuse;
-let Scheckuse;
-let Echeckuse;
-let Wcheckuse;//使用済みの個数
-let NcheckInsert = new Array(13);
-let ScheckInsert = new Array(13);
-let EcheckInsert = new Array(13);
-let WcheckInsert = new Array(13);//Insertしたカード
-let N = new Array(13);
-let S = new Array(13);
-let E = new Array(13);
-let W = new Array(13);
-let Nshapevec = [];
-let Sshapevec = [];
-let Eshapevec = [];
-let Wshapevec = [];//前0:min 1:max 後:suit 0がS
-let Nhcpvec = Array(2);
-let Shcpvec = Array(2);
-let Ehcpvec = Array(2);
-let Whcpvec = Array(2);//0:min 1:max
+let Insertcnt = new Array(4);
+let checkInsert = new Array(4);
+let card = new Array(4);
+let shapevec = []
+let hcpvec = new Array(4);
 
-function printf(s) {
-	$('#result').append(s);
-}
 
 function chk_inbox(i, val) {
 	if (i == '-') return val;
 	else return Number(i);
 }
 
-function Nsort() {
-	let i, j, tmp;
-	for (i = 0; i < 13; ++i) {
-		for (j = i + 1; j < 13; ++j) {
-			if (N[i] > N[j]) {
-				tmp = N[i];
-				N[i] = N[j];
-				N[j] = tmp;
-			}
-		}
-	}
-}
-
-function Ssort() {
-	let i, j, tmp;
-	for (i = 0; i < 13; ++i) {
-		for (j = i + 1; j < 13; ++j) {
-			if (S[i] > S[j]) {
-				tmp = S[i];
-				S[i] = S[j];
-				S[j] = tmp;
-			}
-		}
-	}
-}
-
-function Esort() {
-	let i, j, tmp;
-	for (i = 0; i < 13; ++i) {
-		for (j = i + 1; j < 13; ++j) {
-			if (E[i] > E[j]) {
-				tmp = E[i];
-				E[i] = E[j];
-				E[j] = tmp;
-			}
-		}
-	}
-}
-
-function Wsort() {
-	let i, j, tmp;
-	for (i = 0; i < 13; ++i) {
-		for (j = i + 1; j < 13; ++j) {
-			if (W[i] > W[j]) {
-				tmp = W[i];
-				W[i] = W[j];
-				W[j] = tmp;
-			}
-		}
+function sort() {
+	for (let i = 0; i < 4; ++i) {
+		card[i].sort(function (a, b) {
+			a = Number(a);
+			b = Number(b);
+			if (a > b) return 1;
+			return -1;
+		});
 	}
 }
 
@@ -109,7 +50,7 @@ function AKQtoNum(x) {
 function Nprintout() {
 	let toPrint = new Array("", "", "", "");
 	for (let i = 0; i < 13; ++i) {
-		toPrint[Math.floor(N[i] / 13)] += NumToAKQ(N[i]);
+		toPrint[Math.floor(card[0][i] / 13)] += NumToAKQ(card[0][i]);
 	}
 	for (let i = 0; i < 4; ++i) {
 		if (toPrint[i].length == 0) toPrint[i] = '-';
@@ -119,7 +60,7 @@ function Nprintout() {
 function Sprintout() {
 	let toPrint = new Array("", "", "", "");
 	for (let i = 0; i < 13; ++i) {
-		toPrint[Math.floor(S[i] / 13)] += NumToAKQ(S[i]);
+		toPrint[Math.floor(card[1][i] / 13)] += NumToAKQ(card[1][i]);
 	}
 	for (let i = 0; i < 4; ++i) {
 		if (toPrint[i].length == 0) toPrint[i] = '-';
@@ -129,7 +70,7 @@ function Sprintout() {
 function Eprintout() {
 	let toPrint = new Array("", "", "", "");
 	for (let i = 0; i < 13; ++i) {
-		toPrint[Math.floor(E[i] / 13)] += NumToAKQ(E[i]);
+		toPrint[Math.floor(card[2][i] / 13)] += NumToAKQ(card[2][i]);
 	}
 	for (let i = 0; i < 4; ++i) {
 		if (toPrint[i].length == 0) toPrint[i] = '-';
@@ -139,7 +80,7 @@ function Eprintout() {
 function Wprintout() {
 	let toPrint = new Array("", "", "", "");
 	for (let i = 0; i < 13; ++i) {
-		toPrint[Math.floor(W[i] / 13)] += NumToAKQ(W[i]);
+		toPrint[Math.floor(card[3][i] / 13)] += NumToAKQ(card[3][i]);
 	}
 	for (let i = 0; i < 4; ++i) {
 		if (toPrint[i].length == 0) toPrint[i] = '-';
@@ -147,262 +88,6 @@ function Wprintout() {
 	}
 }
 
-function Ninsert(x) {
-	let flag = 0;
-	if (checkuse[x] == 1) {
-		return false;
-	}
-	else {
-		N[Ncheckuse] = x;
-		NcheckInsert[Ncheckuse] = x;
-		Ncheckuse++;
-		checkuse[x] = 1;
-		return true;
-	}
-}
-function Sinsert(x) {
-	if (checkuse[x] == 1) {
-		return false;
-	}
-	else {
-		S[Scheckuse] = x;
-		ScheckInsert[Scheckuse] = x;
-		Scheckuse++;
-		checkuse[x] = 1;
-		return true;
-	}
-}
-function Einsert(x) {
-	if (checkuse[x] == 1) {
-		return false;
-	}
-	else {
-		E[Echeckuse] = x;
-		EcheckInsert[Echeckuse] = x;
-		Echeckuse++;
-		checkuse[x] = 1;
-		return true;
-	}
-}
-function Winsert(x) {
-	if (checkuse[x] == 1) {
-		return false;
-	}
-	else {
-		W[Wcheckuse] = x;
-		WcheckInsert[Wcheckuse] = x;
-		Wcheckuse++;
-		checkuse[x] = 1;
-		return true;
-	}
-}
-
-
-function Nhandreset() {
-	for (let i = 0; i < 13; i++) {
-		checkuse[N[i]] = 0;
-		N[i] = 100;
-	}
-	for (let i = 0; i < Ncheckuse; i++) {
-		N[i] = NcheckInsert[i];
-		checkuse[N[i]] = 1;
-	}
-}
-
-function Shandreset() {
-	for (let i = 0; i < 13; i++) {
-		checkuse[S[i]] = 0;
-		S[i] = 100;
-	}
-	for (let i = 0; i < Scheckuse; i++) {
-		S[i] = ScheckInsert[i];
-		checkuse[S[i]] = 1;
-	}
-}
-
-function Ehandreset() {
-	for (let i = 0; i < 13; i++) {
-		checkuse[E[i]] = 0;
-		E[i] = 100;
-	}
-	for (let i = 0; i < Echeckuse; i++) {
-		E[i] = EcheckInsert[i];
-		checkuse[E[i]] = 1;
-	}
-}
-
-function Whandreset() {
-	for (let i = 0; i < 13; i++) {
-		checkuse[W[i]] = 0;
-		W[i] = 100;
-	}
-	for (let i = 0; i < Wcheckuse; i++) {
-		W[i] = WcheckInsert[i];
-		checkuse[W[i]] = 1;
-	}
-}
-
-function Nshape() {
-	for (let i = 0; i < 4; i++) {
-		Nshapevec[0][i] = chk_inbox(hand_input.NMin[i].value, 0);
-		Nshapevec[1][i] = chk_inbox(hand_input.NMax[i].value, 13);
-	}
-}
-function Sshape() {
-	for (let i = 0; i < 4; i++) {
-		Sshapevec[0][i] = chk_inbox(hand_input.SMin[i].value, 0);
-		Sshapevec[1][i] = chk_inbox(hand_input.SMax[i].value, 13);
-	}
-}
-
-function Eshape() {
-	for (let i = 0; i < 4; i++) {
-		Eshapevec[0][i] = chk_inbox(hand_input.EMin[i].value, 0);
-		Eshapevec[1][i] = chk_inbox(hand_input.EMax[i].value, 13);
-	}
-}
-function Wshape() {
-	for (let i = 0; i < 4; i++) {
-		Wshapevec[0][i] = chk_inbox(hand_input.WMin[i].value, 0);
-		Wshapevec[1][i] = chk_inbox(hand_input.WMax[i].value, 13);
-	}
-}
-function Nhcp() {
-	Nhcpvec[0] = chk_inbox(hand_input.NhcpMin.value, 0);
-	Nhcpvec[1] = chk_inbox(hand_input.NhcpMax.value, 40);
-}
-function Shcp() {
-	Shcpvec[0] = chk_inbox(hand_input.ShcpMin.value, 0);
-	Shcpvec[1] = chk_inbox(hand_input.ShcpMax.value, 40);
-}
-function Ehcp() {
-	Ehcpvec[0] = chk_inbox(hand_input.EhcpMin.value, 0);
-	Ehcpvec[1] = chk_inbox(hand_input.EhcpMax.value, 40);
-}
-function Whcp() {
-	Whcpvec[0] = chk_inbox(hand_input.WhcpMin.value, 0);
-	Whcpvec[1] = chk_inbox(hand_input.WhcpMax.value, 40);
-}
-
-function first_reset() {
-	$('.text').text("");
-	for (let i = 0; i < 52; i++)
-		checkuse[i] = 0;
-	Ncheckuse = 0;
-	Scheckuse = 0;
-	Echeckuse = 0;
-	Wcheckuse = 0;
-	for (let i = 0; i < 13; i++) {
-		N[i] = 100;
-		S[i] = 100;
-		E[i] = 100;
-		W[i] = 100;
-		NcheckInsert[i] = 100;
-		ScheckInsert[i] = 100;
-		EcheckInsert[i] = 100;
-		WcheckInsert[i] = 100;
-	}
-	for (let i = 0; i < 4; i++) {
-		Nshapevec = [];
-		Sshapevec = [];
-		Eshapevec = [];
-		Wshapevec = [];
-		Nshapevec.push([0, 0, 0, 0]);
-		Nshapevec.push([13, 13, 13, 13]);
-		Sshapevec.push([0, 0, 0, 0]);
-		Sshapevec.push([13, 13, 13, 13]);
-		Eshapevec.push([0, 0, 0, 0]);
-		Eshapevec.push([13, 13, 13, 13]);
-		Wshapevec.push([0, 0, 0, 0]);
-		Wshapevec.push([13, 13, 13, 13]);
-	}
-	Nhcpvec[0] = 0;
-	Nhcpvec[1] = 40;
-	Shcpvec[0] = 0;
-	Shcpvec[1] = 40;
-	Ehcpvec[0] = 0;
-	Ehcpvec[1] = 40;
-	Whcpvec[0] = 0;
-	Whcpvec[1] = 40;
-}
-function AllNinsert() {
-	let i = 0;
-	while (i < 13 - Ncheckuse) {
-		if (N[i + Ncheckuse] == 100) {
-			let r;
-			r = Math.floor(Math.random() * 52);
-			if (checkuse[r] == 0) {
-				N[i + Ncheckuse] = r;
-				checkuse[r] = 1;
-				i++;
-			}
-		}
-		else
-			i++;
-	}
-}
-function AllSinsert() {
-	let i = 0;
-	while (i < 13 - Scheckuse) {
-		if (S[i + Scheckuse] == 100) {
-			let r;
-			r = Math.floor(Math.random() * 52);
-			if (checkuse[r] == 0) {
-				S[i + Scheckuse] = r;
-				checkuse[r] = 1;
-				i++;
-			}
-		}
-		else
-			i++;
-	}
-}
-function AllEinsert() {
-	let i = 0;
-	while (i < 13 - Echeckuse) {
-		if (E[i + Echeckuse] == 100) {
-			let r;
-			r = Math.floor(Math.random() * 52);
-			if (checkuse[r] == 0) {
-				E[i + Echeckuse] = r;
-				checkuse[r] = 1;
-				i++;
-			}
-		}
-		else
-			i++;
-	}
-}
-function AllWinsert() {
-	let i = 0;
-	while (i < 13 - Wcheckuse) {
-		if (W[i + Wcheckuse] == 100) {
-			let r;
-			r = Math.floor(Math.random() * 52);
-			if (checkuse[r] == 0) {
-				W[i + Wcheckuse] = r;
-				checkuse[r] = 1;
-				i++;
-			}
-		}
-		else
-			i++;
-	}
-}
-
-function AllInsert() {
-	AllNinsert();
-	AllSinsert();
-	AllEinsert();
-	AllWinsert();
-}
-
-function sort() {
-	Nsort();
-	Ssort();
-	Esort();
-	Wsort();
-}
 function printout() {
 	Nprintout();
 	Sprintout();
@@ -410,171 +95,136 @@ function printout() {
 	Wprintout();
 }
 
-function calc_card_num(suit, num) {
-	let ret = 0;
-	ret += suit * 13;
-	if (num = 'A') ret += 0;
+function insert(a, b) {
+	if (checkuse[b] == 1) return false;
+	card[a][Insertcnt[a]] = b;
+	checkInsert[a][Insertcnt[a]] = b;
+	Insertcnt[a]++;
+	checkuse[b] = 1;
+	return true;
+}
 
+function handreset() {
+	for (let j = 0; j < 4; j++) {
+		for (let i = 0; i < 13; i++) {
+			checkuse[card[j][i]] = 0;
+			card[j][i] = 100;
+		}
+		for (let i = 0; i < Insertcnt[j]; i++) {
+			card[j][i] = checkInsert[j][i];
+			checkuse[card[j][i]] = 1;
+		}
+	}
+}
+
+function shape() {
+	for (let i = 0; i < 4; ++i) {
+		for (let j = 0; j < 4; ++j) {
+			shapevec[i][0][j] = chk_inbox(hand_input.Min[i * 4 + j].value, 0);
+			shapevec[i][1][j] = chk_inbox(hand_input.Max[i * 4 + j].value, 13);
+		}
+	}
+}
+
+function hcp() {
+	for (let i = 0; i < 4; ++i) {
+		hcpvec[i][0] = chk_inbox(hand_input.hcpMin[i].value, 0);
+		hcpvec[i][1] = chk_inbox(hand_input.hcpMax[i].value, 40);
+	}
+}
+
+function first_reset() {
+	$('.text').text("");
+	for (let i = 0; i < 52; i++) {
+		checkuse[i] = 0;
+	}
+	hcpvec = [[], [], [], []];
+	for (let i = 0; i < 4; ++i) {
+		Insertcnt[i] = 0;
+		hcpvec[i][0] = 0;
+		hcpvec[i][1] = 40;
+	}
+
+	for (let i = 0; i < 4; ++i) {
+		card[i] = new Array(13);
+		checkInsert[i] = new Array(13);
+		for (let j = 0; j < 13; ++j) {
+			card[i][j] = 100;
+			checkInsert[i][j] = 100;
+		}
+	}
+	shapevec = [[], [], [], []]
+
+	for (let i = 0; i < 4; i++) {
+		shapevec[i].push([0, 0, 0, 0]);
+		shapevec[i].push([13, 13, 13, 13]);
+	}
+}
+
+function Allinsert() {
+	for (let j = 0; j < 4; j++) {
+		let i = 0;
+		while (i < 13 - Insertcnt[j]) {
+			if (card[j][i + Insertcnt[j]] == 100) {
+				let r;
+				r = Math.floor(Math.random() * 52);
+				if (checkuse[r] == 0) {
+					card[j][i + Insertcnt[j]] = r;
+					checkuse[r] = 1;
+					i++;
+				}
+			}
+			else i++;
+		}
+	}
 }
 
 function Insert() {
-	let flag=true;
-	for (let i = 0; i < 4; i++) {
-		let string = hand_input.NCard[i].value;
-		for (let j = 0; j < string.length; ++j) {
-			flag&=Ninsert(13 * i + AKQtoNum(string[j]));
-		}
-	}
-	for (let i = 0; i < 4; i++) {
-		let string = hand_input.SCard[i].value;
-		for (let j = 0; j < string.length; ++j) {
-			flag&=Sinsert(13 * i + AKQtoNum(string[j]));
-		}
-	}
-	for (let i = 0; i < 4; i++) {
-		let string = hand_input.ECard[i].value;
-		for (let j = 0; j < string.length; ++j) {
-			flag&=Einsert(13 * i + AKQtoNum(string[j]));
-		}
-	}
-	for (let i = 0; i < 4; i++) {
-		let string = hand_input.WCard[i].value;
-		for (let j = 0; j < string.length; ++j) {
-			flag&=Winsert(13 * i + AKQtoNum(string[j]));
+	let flag = true;
+	for (let k = 0; k < 4; ++k) {
+		for (let i = 0; i < 4; i++) {
+			let string = hand_input.Card[4 * k + i].value;
+			for (let j = 0; j < string.length; ++j) {
+				flag &= insert(k, 13 * i + AKQtoNum(string[j]));
+			}
 		}
 	}
 	return flag;
 }
 
-function handreset() {
-	Nhandreset();
-	Shandreset();
-	Ehandreset();
-	Whandreset();
-}
-
-function condition() {
-	Nshape();
-	Sshape();
-	Eshape();
-	Wshape();
-	Nhcp();
-	Shcp();
-	Ehcp();
-	Whcp();
-
-}
-
 function checkcondition() {
-	let cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(N[i] / 13) == 0) cnt++;
-	if (cnt < Nshapevec[0][0] || cnt > Nshapevec[1][0])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(N[i] / 13) == 1) cnt++;
-	if (cnt < Nshapevec[0][1] || cnt > Nshapevec[1][1])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(N[i] / 13) == 2) cnt++;
-	if (cnt < Nshapevec[0][2] || cnt > Nshapevec[1][2])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(N[i] / 13) == 3) cnt++;
-	if (cnt < Nshapevec[0][3] || cnt > Nshapevec[1][3])
-		return 1;									//ここまででNのshapeの確認完了
-
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(S[i] / 13) == 0) cnt++;
-	if (cnt < Sshapevec[0][0] || cnt > Sshapevec[1][0])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(S[i] / 13) == 1) cnt++;
-	if (cnt < Sshapevec[0][1] || cnt > Sshapevec[1][1])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(S[i] / 13) == 2) cnt++;
-	if (cnt < Sshapevec[0][2] || cnt > Sshapevec[1][2])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(S[i] / 13) == 3) cnt++;
-	if (cnt < Sshapevec[0][3] || cnt > Sshapevec[1][3])
-		return 1;									//ここまででSのshapeの確認完了
-
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(E[i] / 13) == 0) cnt++;
-	if (cnt < Eshapevec[0][0] || cnt > Eshapevec[1][0])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(E[i] / 13) == 1) cnt++;
-	if (cnt < Eshapevec[0][1] || cnt > Eshapevec[1][1])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(E[i] / 13) == 2) cnt++;
-	if (cnt < Eshapevec[0][2] || cnt > Eshapevec[1][2])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(E[i] / 13) == 3) cnt++;
-	if (cnt < Eshapevec[0][3] || cnt > Eshapevec[1][3])
-		return 1;									//ここまででEのshapeの確認完了
-
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(W[i] / 13) == 0) cnt++;
-	if (cnt < Wshapevec[0][0] || cnt > Wshapevec[1][0])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(W[i] / 13) == 1) cnt++;
-	if (cnt < Wshapevec[0][1] || cnt > Wshapevec[1][1])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(W[i] / 13) == 2) cnt++;
-	if (cnt < Wshapevec[0][2] || cnt > Wshapevec[1][2])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (Math.floor(W[i] / 13) == 3) cnt++;
-	if (cnt < Wshapevec[0][3] || cnt > Wshapevec[1][3])
-		return 1;									//ここまででWのshapeの確認完了
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (N[i] % 13 <= 4) cnt = cnt + 4 - N[i] % 13;
-	if (cnt < Nhcpvec[0] || cnt > Nhcpvec[1])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (S[i] % 13 <= 4) cnt = cnt + 4 - S[i] % 13;
-	if (cnt < Shcpvec[0] || cnt > Shcpvec[1])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (E[i] % 13 <= 4) cnt = cnt + 4 - E[i] % 13;
-	if (cnt < Ehcpvec[0] || cnt > Ehcpvec[1])
-		return 1;
-	cnt = 0;
-	for (let i = 0; i < 13; i++)
-		if (W[i] % 13 <= 4) cnt = cnt + 4 - W[i] % 13;
-	if (cnt < Whcpvec[0] || cnt > Whcpvec[1])
-		return 1;
-
+	for (let j = 0; j < 4; j++) {
+		let cnt = 0;
+		for (let i = 0; i < 13; i++)
+			if (Math.floor(card[j][i] / 13) == 0) cnt++;
+		if (cnt < shapevec[j][0][0] || cnt > shapevec[j][1][0])
+			return 1;
+		cnt = 0;
+		for (let i = 0; i < 13; i++)
+			if (Math.floor(card[j][i] / 13) == 1) cnt++;
+		if (cnt < shapevec[j][0][1] || cnt > shapevec[j][1][1])
+			return 1;
+		cnt = 0;
+		for (let i = 0; i < 13; i++)
+			if (Math.floor(card[j][i] / 13) == 2) cnt++;
+		if (cnt < shapevec[j][0][2] || cnt > shapevec[j][1][2])
+			return 1;
+		cnt = 0;
+		for (let i = 0; i < 13; i++)
+			if (Math.floor(card[j][i] / 13) == 3) cnt++;
+		if (cnt < shapevec[j][0][3] || cnt > shapevec[j][1][3])
+			return 1;
+		cnt = 0;
+		for (let i = 0; i < 13; i++)
+			if (card[j][i] % 13 <= 4) cnt = cnt + 4 - card[j][i] % 13;
+		if (cnt < hcpvec[j][0] || cnt > hcpvec[j][1])
+			return 1;
+	}
 	return 0;
 }
 
-function counter_up(){
-	let times=Number($('#times').text());
+function counter_up() {
+	let times = Number($('#times').text());
 	times++;
 	$('#times').text(times);
 }
@@ -583,8 +233,9 @@ function main() {
 	let flag = false;
 	counter_up();
 	first_reset();
-	condition();
-	if(!Insert()){
+	shape();
+	hcp();
+	if (!Insert()) {
 		$('#error').text("挿入したカードに重複があります．");
 		return;
 	}
@@ -593,7 +244,7 @@ function main() {
 	start = start.getTime();
 	while (true) {
 		handreset();//Insertを守りながらリセット
-		AllInsert();
+		Allinsert();
 		sort();
 		now = new Date();
 		now = now.getTime();

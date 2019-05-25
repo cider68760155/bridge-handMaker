@@ -255,7 +255,7 @@ function main() {
 	if (is_changed()) {
 		$('#sikouID').text(Math.floor(Math.random() * 100000));
 		$('#times').text(1);
-	} 
+	}
 	if (!Insert()) {
 		$('#error').text("挿入したカードに重複があります．");
 		return;
@@ -281,18 +281,18 @@ function main() {
 	}
 }
 
-function dds(){
-	let dds_url="http://www.danvk.org/bridge/?deal=N:";
-	for(let i=0;i<4;++i){
-		let incard=["","","",""];
-		for(let j=0;j<13;++j){
-			incard[Math.floor(card[i][j]/13)]+=NumToAKQ(card[i][j])
+function dds() {
+	let dds_url = "http://www.danvk.org/bridge/?deal=N:";
+	[0, 2, 1, 3].forEach(i => {
+		let incard = ["", "", "", ""];
+		for (let j = 0; j < 13; ++j) {
+			incard[Math.floor(card[i][j] / 13)] += NumToAKQ(card[i][j])
 		}
-		for(let i=0;i<4;++i){
-			dds_url+=incard[i];
-			dds_url+=i===3?" ":".";
+		for (let i = 0; i < 4; ++i) {
+			dds_url += incard[i];
+			dds_url += i === 3 ? " " : ".";
 		}
-	}
+	});
 	console.log(dds_url);
-	window.open(dds_url,'_blank');
+	window.open(dds_url, '_blank');
 }

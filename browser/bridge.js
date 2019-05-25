@@ -275,9 +275,24 @@ function main() {
 	}
 	if (flag) {
 		printout();
-		handreset();
 	}
 	else {
 		$('#error').text("やめて，いぢめないで．条件が厳しすぎます．");
 	}
+}
+
+function dds(){
+	let dds_url="http://www.danvk.org/bridge/?deal=N:";
+	for(let i=0;i<4;++i){
+		let incard=["","","",""];
+		for(let j=0;j<13;++j){
+			incard[Math.floor(card[i][j]/13)]+=NumToAKQ(card[i][j])
+		}
+		for(let i=0;i<4;++i){
+			dds_url+=incard[i];
+			dds_url+=i===3?" ":".";
+		}
+	}
+	console.log(dds_url);
+	window.open(dds_url,'_blank');
 }
